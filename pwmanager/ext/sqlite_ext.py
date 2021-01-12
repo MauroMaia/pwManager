@@ -1,4 +1,4 @@
-from core.persistence.database import Database
+from .persistence.sqlite.database import Database
 
 
 def extend_sqlite_db(app):

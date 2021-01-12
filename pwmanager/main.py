@@ -7,7 +7,7 @@ from controllers.user import User
 from controllers.vault import Vault
 from pwmanager.core.exc import AppError
 from pwmanager.controllers.base import Base
-from pwmanager.ext.sqlite_ext import extend_sqlite_db
+from pwmanager.ext.json_ext import extend_json_file_db
 
 # configuration defaults
 CONFIG = init_defaults('pwmanager')
@@ -24,7 +24,8 @@ class MyApp(App):
         config_defaults = CONFIG
 
         hooks = [
-            ('post_setup', extend_sqlite_db)
+            # ('post_setup', extend_sqlite_db)
+            ('post_setup', extend_json_file_db)
         ]
 
         # call sys.exit() on close
