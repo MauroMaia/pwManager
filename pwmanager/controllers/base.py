@@ -37,24 +37,15 @@ class Base(Controller):
         help='Generate a random password',
         # sub-command level arguments. ex: 'pwmanager command1 --foo bar'
         arguments=[
-            ### add a sample foo option under subcommand namespace
-            ###(['-f', '--foo'],
-            ### {'help': 'notorious foo option',
-            ###  'action': 'store',
-            ###  'dest': 'foo'}),
+            (['-s', '--size'], {
+                'help': 'Password size',
+                'action': 'store',
+                'dest': 'size',
+                'type': int,
+                'default': 16
+            })
         ],
     )
     def generate(self):
         """Example sub-command."""
-
-        # data = {
-        #    'foo': 'bar',
-        # }
-
-        ### do something with arguments
-        # if self.app.pargs.foo is not None:
-        #    data['foo'] = self.app.pargs.foo
-
-        # self.app.render(data, 'command1.jinja2')
-        new_pass = generate_random_password(self.app, 16)
-        print(new_pass + "\n")
+        print(generate_random_password(self.app, self.app.pargs.size) + "\n")
