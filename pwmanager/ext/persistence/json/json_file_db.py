@@ -1,6 +1,6 @@
-import json
 import os
 import pickle
+from datetime import datetime
 
 from ext.persistence.VaultDatabaseInterface import VaultDatabaseInterface
 from ext.persistence.json.domain.vault_file import VaultFile
@@ -20,7 +20,12 @@ class JsonFileDB(VaultDatabaseInterface):
         if os.path.exists(self.path):
             self.load_data()
         else:
-            self.vault = VaultFile(user_list=list(), group_list=list())
+            self.vault = VaultFile(
+                user_list=list(),
+                group_list=list(),
+                created_at=datetime.now(),
+                last_update_at=datetime.now()
+            )
 
     def load_data(self) -> bool:
         """Overrides InformalParserInterface.load_data_source()"""
@@ -32,12 +37,18 @@ class JsonFileDB(VaultDatabaseInterface):
         return True
 
     def save_data(self) -> bool:
-        """Overrides InformalParserInterface.extract_text()"""
-        json_string = json.dumps(self.vault.__dict__, default=lambda o: o.__dict__)
+        """Overrides VaultDatabaseInterface.save_data()"""
 
+        # set file last modification time
+        self.vault.last_update_at = datetime.now()
+
+        # save to file
         f = open(self.path, "wb")
         pickle.dump(self.vault, f)
         f.close()
+
+        # TODO encrypt the file
+
         return True
 
     def find_user_by_name(self, username=None):

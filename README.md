@@ -67,3 +67,10 @@ $ make docker
 
 $ docker run -it pwmanager --help
 ```
+
+## TODOS
+
+- [ ] Create/Connect to storege only when required.
+- [ ] At storage creation time set master user.
+- [ ] Add option an option to save/replace a password
+- [ ] Add a verification to force/list password entries with more than x time. 
