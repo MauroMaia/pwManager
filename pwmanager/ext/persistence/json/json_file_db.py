@@ -1,5 +1,6 @@
 import json
 import os
+import pickle
 
 from ext.persistence.VaultDatabaseInterface import VaultDatabaseInterface
 from ext.persistence.json.domain.vault_file import VaultFile
@@ -23,8 +24,8 @@ class JsonFileDB(VaultDatabaseInterface):
 
     def load_data(self) -> bool:
         """Overrides InformalParserInterface.load_data_source()"""
-        f = open(self.path, "r")
-        vf = VaultFile(**json.loads(f.read()))
+        f = open(self.path, "rb")
+        vf = pickle.load(f)
         f.close()
 
         self.vault = vf
@@ -34,8 +35,8 @@ class JsonFileDB(VaultDatabaseInterface):
         """Overrides InformalParserInterface.extract_text()"""
         json_string = json.dumps(self.vault.__dict__, default=lambda o: o.__dict__)
 
-        f = open(self.path, "w")
-        f.write(json_string)
+        f = open(self.path, "wb")
+        pickle.dump(self.vault, f)
         f.close()
         return True
 
