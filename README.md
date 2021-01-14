@@ -34,7 +34,6 @@ $ pwmanager --help
 $ make test
 ```
 
-
 ### Releasing to PyPi
 
 Before releasing to PyPi, you must configure your login credentials:
@@ -59,8 +58,8 @@ $ make dist-upload
 
 ### Docker
 
-Included is a basic `Dockerfile` for building and distributing `MFM Password Manager`,
-and can be built with the included `make` helper:
+Included is a basic `Dockerfile` for building and distributing `MFM Password Manager`, and can be built with the
+included `make` helper:
 
 ```
 $ make docker
@@ -70,7 +69,8 @@ $ docker run -it pwmanager --help
 
 ## TODOS
 
-- [ ] Create/Connect to storege only when required.
+- [ ] Create/Connect to storage only when required.
 - [ ] At storage creation time set master user.
 - [ ] Add option an option to save/replace a password
-- [ ] Add a verification to force/list password entries with more than x time. 
+- [ ] Add a verification to force/list password entries with more than x time.
+- [ ] Remove database specific types to allow view/controller layer to integrate with other storage types.

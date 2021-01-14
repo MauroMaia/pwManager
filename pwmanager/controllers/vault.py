@@ -54,7 +54,3 @@ class Vault(Controller):
     @ex(help='TODO delete an vault')
     def delete(self):
         pass
-
-    @ex(help='TODO delete an vault')
-    def entry(self):
-        pass
