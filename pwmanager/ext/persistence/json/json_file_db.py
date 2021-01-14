@@ -3,6 +3,7 @@ import pickle
 from datetime import datetime
 
 from ext.persistence.VaultDatabaseInterface import VaultDatabaseInterface
+from ext.persistence.json.domain.vault_entry import VaultEntry
 from ext.persistence.json.domain.vault_file import VaultFile
 from ext.persistence.json.domain.vault_user import User
 
@@ -23,6 +24,7 @@ class JsonFileDB(VaultDatabaseInterface):
             self.vault = VaultFile(
                 user_list=list(),
                 group_list=list(),
+                entries=list(),
                 created_at=datetime.now(),
                 last_update_at=datetime.now()
             )
@@ -86,5 +88,27 @@ class JsonFileDB(VaultDatabaseInterface):
         assert master_password_hash != '', 'master_password_hash should not be empty'
         assert type(master_password_hash) == str, 'master_password_hash type need to be string'
 
-        self.vault.user_list.append(User(username, master_password_hash))
+        self.vault.user_list.append(User(username, master_password_hash, datetime.now(), datetime.now()))
         self.save_data()
+
+    def add_new_entry(self, entry: VaultEntry):
+        assert entry is not None, 'entry should not be None'
+
+        self.vault.entries.append(entry)
+        pass
+
+    def find_entry_by_description(self, entry_description):
+        assert entry_description is not None, 'entry_description should not be None'
+        assert entry_description != '', 'entry_description should not be empty'
+        assert type(entry_description) == str, 'entry_description type need to be string'
+
+        for entry in self.vault.entries:
+            if entry.description == entry_description:
+                return entry
+
+        for group in self.vault.group_list:
+            for entry in group.entries:
+                if entry.description == entry_description:
+                    return entry
+
+        return None

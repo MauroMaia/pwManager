@@ -30,3 +30,8 @@ def read_master_password(app):
 
     app.log.error('No valid master password read. Number of tries: ' + str(counter))
     return None
+
+
+def contains_dict(o):
+    if o.__dict__ is not None:
+        return o.__dict__

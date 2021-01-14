@@ -3,6 +3,7 @@ import os
 from cement import App, TestApp, init_defaults
 from cement.core.exc import CaughtSignal
 
+from controllers.entry import Entry
 from controllers.user import User
 from controllers.vault import Vault
 from pwmanager.core.exc import AppError
@@ -54,7 +55,8 @@ class MyApp(App):
         handlers = [
             Base,
             User,
-            Vault
+            Vault,
+            Entry
         ]
 
 
