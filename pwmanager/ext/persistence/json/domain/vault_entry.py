@@ -9,7 +9,7 @@ class VaultEntry(object):
 
     def __init__(
             self, username: str,
-            encrypted_password: bytes,
+            encrypted_password: str,
             description: str,
             optional_attributes: List[OptionalAttribute],
             last_update_at: datetime,
@@ -24,7 +24,7 @@ class VaultEntry(object):
 
         assert encrypted_password is not None, 'encrypted_password should not be None'
         assert encrypted_password != '', 'encrypted_password should not be empty'
-        assert type(encrypted_password) == bytes, 'encrypted_password type need to be bytes'
+        assert type(encrypted_password) == str, 'encrypted_password type need to be str'
 
         self.description = description
         self.username = username

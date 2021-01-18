@@ -4,7 +4,7 @@ from datetime import datetime
 from cement import Controller, ex
 
 from core.crypto import generate_random_password, encrypt, decrypt
-from core.utils import read_master_password, create_hash_password, contains_dict
+from core.utils import read_master_password, create_hash_password, json_default
 from ext.persistence.json.domain.vault_entry import VaultEntry
 
 
@@ -86,7 +86,7 @@ class Entry(Controller):
 
         entry = VaultEntry(
             self.app.pargs.username,
-            encrypted_password,
+            str(encrypted_password),
             self.app.pargs.entry_description,
             optional_attributes=[],
             last_update_at=datetime.now(),
@@ -97,6 +97,18 @@ class Entry(Controller):
         self.app.db.save_data()
 
         # TODO - show information to the user
-        # print(" Raw password: ")
-        # print(decrypt(encrypted_password, vault_key))
-        # print(" Added new entry: " + json.dumps(entry.__dict__, default=lambda o: contains_dict(o), indent=4) + "\n")
+        print(
+            "Raw password: " + self.app.pargs.password
+            + "\nAdded new entry:\n" + json.dumps(
+                entry.__dict__,
+                ensure_ascii=False,
+                default=json_default,
+                indent=4
+            ) + "\n")
+
+
+    def list(self):
+        # print(" encrypted password: " + str(encrypted_password))
+        # d = decrypt(encrypted_password, vault_key)
+        # print(" decrypt password: " + str(d.decode()))
+        pass

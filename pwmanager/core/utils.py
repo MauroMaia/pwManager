@@ -1,4 +1,6 @@
 import hashlib
+import datetime
+import uuid
 from getpass import getpass
 
 
@@ -32,6 +34,10 @@ def read_master_password(app):
     return None
 
 
-def contains_dict(o):
-    if o.__dict__ is not None:
-        return o.__dict__
+def json_default(value):
+    if isinstance(value, datetime.date):
+        return value.astimezone().replace(tzinfo=datetime.timezone.utc).isoformat()
+    elif isinstance(value, uuid.UUID):
+        return str(value)
+    else:
+        return value.__dict__
