@@ -112,3 +112,39 @@ class JsonFileDB(VaultDatabaseInterface):
                     return entry
 
         return None
+
+    def find_all_entry_by_description(self, entry_description):
+        assert entry_description is not None, 'entry_description should not be None'
+        assert entry_description != '', 'entry_description should not be empty'
+        assert type(entry_description) == str, 'entry_description type need to be string'
+
+        result = []
+
+        for entry in self.vault.entries:
+            if entry_description in entry.description:
+                result.append(entry)
+
+        for group in self.vault.group_list:
+            for entry in group.entries:
+                if entry_description in entry.description:
+                    result.append(entry)
+
+        return result
+
+    def find_all_entry_by_uuid(self, entry_uuid):
+        assert entry_uuid is not None, 'entry_uuid should not be None'
+        assert entry_uuid != '', 'entry_uuid should not be empty'
+        assert type(entry_uuid) == str, 'entry_uuid type need to be string'
+
+        result = []
+
+        for entry in self.vault.entries:
+            if entry_uuid in entry.description:
+                result.append(entry)
+
+        for group in self.vault.group_list:
+            for entry in group.entries:
+                if entry_uuid in entry.description:
+                    result.append(entry)
+
+        return result

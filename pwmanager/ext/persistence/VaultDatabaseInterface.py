@@ -34,3 +34,11 @@ class VaultDatabaseInterface:
     def find_entry_by_description(self, entry_description: str):
         """Search for a Entry object based on it entry_name"""
         pass
+
+    def find_all_entry_by_description(self, entry_description: str):
+        """Search all Entries objects based on it entry_description"""
+        pass
+
+    def find_all_entry_by_uuid(self, entry_uuid: str):
+        """Search all Entries objects based on it entry_uuid"""
+        pass

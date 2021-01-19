@@ -19,12 +19,12 @@ class VaultEntry(object):
         """ TODO """
 
         assert username is not None, 'username should not be None'
-        assert username != '', 'username should not be empty'
         assert type(username) == str, 'username type need to be string'
+        assert username != '', 'username should not be empty'
 
         assert encrypted_password is not None, 'encrypted_password should not be None'
-        assert encrypted_password != '', 'encrypted_password should not be empty'
         assert type(encrypted_password) == str, 'encrypted_password type need to be str'
+        assert encrypted_password != '', 'encrypted_password should not be empty'
 
         self.description = description
         self.username = username

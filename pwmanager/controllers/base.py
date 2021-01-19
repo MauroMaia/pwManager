@@ -23,9 +23,13 @@ class Base(Controller):
         # controller level arguments. ex: 'pwmanager --version'
         arguments = [
             ### add a version banner
-            (['-v', '--version'],
-             {'action': 'version',
-              'version': VERSION_BANNER}),
+            (
+                ['-v', '--version'],
+                {
+                    'action': 'version',
+                    'version': VERSION_BANNER
+                }
+            ),
         ]
 
     def _default(self):
