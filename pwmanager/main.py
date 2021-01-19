@@ -2,6 +2,7 @@ import os
 
 from cement import App, TestApp, init_defaults
 from cement.core.exc import CaughtSignal
+from cement.ext.ext_colorlog import ColorLogHandler
 
 from controllers.entry import Entry
 from controllers.user import User
@@ -11,8 +12,17 @@ from pwmanager.controllers.base import Base
 from pwmanager.ext.json_ext import extend_json_file_db
 
 # configuration defaults
-CONFIG = init_defaults('pwmanager')
-CONFIG['pwmanager']['db_file'] = os.getcwd() + '/passwd.db'
+CONFIG = init_defaults('pwmanager', 'log.colorlog')
+if not hasattr(CONFIG['pwmanager'], 'db_file'):
+    CONFIG['pwmanager']['db_file'] = os.getcwd() + '/../passwd.db'
+
+COLORS = {
+    'DEBUG': 'cyan',
+    'INFO': 'green',
+    'WARNING': 'yellow',
+    'ERROR': 'red',
+    'CRITICAL': 'red,bg_white',
+}
 
 
 class MyApp(App):
@@ -41,12 +51,18 @@ class MyApp(App):
 
         # configuration handler
         config_handler = 'yaml'
+        config_files = [
+            '/etc/myapp/myapp.conf',
+            '~/.config/myapp/myapp.conf',
+            '~/.myapp.conf',
+            '~/Documents/pet-projects/pwManager/config/pwmanager.yml'
+        ]
 
         # configuration file suffix
         config_file_suffix = '.yml'
 
         # set the log handler
-        log_handler = 'colorlog'
+        log_handler = ColorLogHandler(colors=COLORS)
 
         # set the output handler
         output_handler = 'jinja2'

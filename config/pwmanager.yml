@@ -4,7 +4,7 @@
 pwmanager:
   db_file: /tmp/passwd.db
 
-### Toggle application level debug (does not toggle framework debugging)
+  ### Toggle application level debug (does not toggle framework debugging)
   debug: true
 
 ### Where external (third-party) plugins are loaded from
@@ -24,14 +24,14 @@ pwmanager:
 
 log.colorlog:
 
-### Where the log file lives (no log file by default)
-# file: null
+  ### Where the log file lives (no log file by default)
+  file: 'my.log'
 
-### The level for which to log.  One of: info, warning, error, fatal, debug
+  ### The level for which to log.  One of: info, warning, error, fatal, debug
   level: debug
 
-### Whether or not to log to console
-  to_console: true
+  ### Whether or not to log to console
+  to_console: false
 
 ### Whether or not to rotate the log file when it reaches `max_bytes`
 # rotate: false
