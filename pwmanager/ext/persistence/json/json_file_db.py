@@ -1,5 +1,6 @@
 import os
 import pickle
+import zlib
 from datetime import datetime
 
 from ext.persistence.VaultDatabaseInterface import VaultDatabaseInterface
@@ -31,9 +32,13 @@ class JsonFileDB(VaultDatabaseInterface):
 
     def load_data(self) -> bool:
         """Overrides InformalParserInterface.load_data_source()"""
-        f = open(self.path, "rb")
-        vf = pickle.load(f)
-        f.close()
+        file = open(self.path, "rb")
+
+        data_compressed = file.read()
+        data_decompressed = zlib.decompress(data_compressed)
+        vf = pickle.loads(data_decompressed)
+
+        file.close()
 
         self.vault = vf
         return True
@@ -44,13 +49,16 @@ class JsonFileDB(VaultDatabaseInterface):
         # set file last modification time
         self.vault.last_update_at = datetime.now()
 
+        # TODO encrypt the file content
+
         # save to file
-        f = open(self.path, "wb")
-        pickle.dump(self.vault, f)
-        f.close()
+        file = open(self.path, "wb")
 
-        # TODO encrypt the file
+        str_dump = pickle.dumps(self.vault)
+        str_compressed = zlib.compress(str_dump)
+        file.write(str_compressed)
 
+        file.close()
         return True
 
     def find_user_by_name(self, username=None):

@@ -31,7 +31,7 @@ log.colorlog:
   level: debug
 
   ### Whether or not to log to console
-  to_console: false
+  to_console: true
 
 ### Whether or not to rotate the log file when it reaches `max_bytes`
 # rotate: false
