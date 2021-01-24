@@ -244,3 +244,117 @@ class Entry(Controller):
                     ).decode()
                 )
             )
+
+    @ex(help='This action allows you to import an csv file (kdbx based)',
+        arguments=[
+            (
+                    ['-u', '--user'],
+                    {
+                        'help': 'User password user name',
+                        'dest': 'username'
+                    }
+            ),
+            (
+                    ['-f', '--file'],
+                    {
+                        'help': 'Name to give to the new entry.',
+                        'dest': 'source_file'
+                    }
+            )
+        ])
+    def import_csv(self):
+        # Basic pargs validations
+        assert self.app.pargs.username is not None, 'username should be defined'
+        assert self.app.pargs.username != '', 'username should be different form empty string'
+
+        assert self.app.pargs.source_file is not None, 'source_file should be defined'
+        assert self.app.pargs.source_file != '', 'source_file should be different form empty string'
+
+        # check if user exist
+        user = self.app.db.find_user_by_name(self.app.pargs.username)
+        if user is None:
+            self.app.log.fatal("User {} does not exit in database".format(self.app.pargs.username))
+            return
+
+        # check if the file exist
+        if not path.isfile(self.app.pargs.source_file):
+            self.app.log.fatal("File {} does not exit".format(self.app.pargs.source_file))
+            return
+
+        # get hash user password
+        master_password = read_master_password(self.app)
+        assert master_password is not None, 'Invalid master password.'
+
+        keys = create_hash_password(master_password, self.app.pargs.username)
+        vault_key = keys[0]
+        master_password_hash = keys[1]
+
+        new_entries = list()
+
+        try:
+            with open(self.app.pargs.source_file) as csv_file:
+                # do something with file
+                reader = csv.DictReader(csv_file)
+                for row in reader:
+                    #   Check line content is valid
+                    # assert row['Password'] is not None, \
+                    #    'Entry {} password should be defined'.format(row['Title'])
+                    # assert row['Password'] != '', \
+                    #    'Entry {} password should be different form empty string'.format(row['Title'])
+
+                    # TODO - Check if entry exist (there is more fields to validate)
+                    self.app.log.debug('Checking {} - {} from {} .'.format(row['Title'], row['Username'], row['Group']))
+                    entry = self.app.db.find_entry(row['Title'], row['Username'], row['Group'])
+                    assert entry is None, \
+                        'Invalid entry description. Description "{}" already exist.'.format(row['Title'])
+
+                    if row['Password'] != '':
+                        row['Password'] = encrypt(row['Password'], vault_key).decode()
+
+                    entry = VaultEntry(
+                        username=row['Username'],
+                        group=row['Group'],
+                        encrypted_password=row['Password'],
+                        description=row['Title'],
+                        optional_attributes=[
+                            OptionalAttribute(
+                                key='URL',
+                                value=row['URL'],
+                                last_update_at=datetime.now(),
+                                created_at=datetime.now()
+                            ),
+                            OptionalAttribute(
+                                key='Notes',
+                                value=row['Notes'],
+                                last_update_at=datetime.now(),
+                                created_at=datetime.now()
+                            )
+                        ],
+                        last_update_at=datetime.now(),
+                        created_at=datetime.now()
+                    )
+
+                    self.app.db.add_new_entry(entry)
+
+                    new_entries.append(entry)
+
+        except IOError:
+            self.app.log.fatal("Could not read file {} .".format(self.app.pargs.source_file))
+            return
+
+        if len(new_entries) == 0:
+            self.app.log.fatal("No new entry found in {}".format(self.app.pargs.source_file))
+            return
+
+        self.app.db.save_data()
+
+        print(
+            "Loaded new entry:\n{}".format(
+                json.dumps(
+                    new_entries,
+                    ensure_ascii=False,
+                    default=json_default,
+                    indent=4
+                )
+            )
+        )
