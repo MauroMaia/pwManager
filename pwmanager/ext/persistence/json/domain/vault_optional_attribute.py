@@ -4,8 +4,8 @@ from datetime import datetime
 class OptionalAttribute(object):
     def __init__(
             self,
-            key,
-            value,
+            key: str,
+            value: any,
             last_update_at: datetime,
             created_at: datetime
     ):

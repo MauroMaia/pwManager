@@ -24,7 +24,6 @@ class JsonFileDB(VaultDatabaseInterface):
         else:
             self.vault = VaultFile(
                 user_list=list(),
-                group_list=list(),
                 entries=list(),
                 created_at=datetime.now(),
                 last_update_at=datetime.now()
@@ -81,10 +80,9 @@ class JsonFileDB(VaultDatabaseInterface):
 
         # Fixme this is not the this should be done. group_name can (and will be) a path.
         group_list = []
-        for group in self.vault.group_list:
-            if group.name == group_name:
-                group_list.append(group)
-            # group_list.append(find_group_by_name(group, group_name))
+        for entry in self.vault.entries:
+            if entry.group == group_name:
+                group_list.append(entry.group)
         return group_list
 
     def add_new_db_user(self, username, master_password_hash):
@@ -105,19 +103,12 @@ class JsonFileDB(VaultDatabaseInterface):
         self.vault.entries.append(entry)
         pass
 
-    def find_entry_by_description(self, entry_description):
-        assert entry_description is not None, 'entry_description should not be None'
-        assert entry_description != '', 'entry_description should not be empty'
-        assert type(entry_description) == str, 'entry_description type need to be string'
-
+    def find_entry(self, entry_description: str, entry_username: str, entry_group: str):
         for entry in self.vault.entries:
-            if entry.description == entry_description:
+            if entry.description == entry_description and \
+                    entry.username == entry_username and \
+                    entry.group == entry_group:
                 return entry
-
-        for group in self.vault.group_list:
-            for entry in group.entries:
-                if entry.description == entry_description:
-                    return entry
 
         return None
 
@@ -132,11 +123,6 @@ class JsonFileDB(VaultDatabaseInterface):
             if entry_description in entry.description:
                 result.append(entry)
 
-        for group in self.vault.group_list:
-            for entry in group.entries:
-                if entry_description in entry.description:
-                    result.append(entry)
-
         return result
 
     def find_all_entry_by_uuid(self, entry_uuid):
@@ -149,10 +135,5 @@ class JsonFileDB(VaultDatabaseInterface):
         for entry in self.vault.entries:
             if entry_uuid in entry.description:
                 result.append(entry)
-
-        for group in self.vault.group_list:
-            for entry in group.entries:
-                if entry_uuid in entry.description:
-                    result.append(entry)
 
         return result

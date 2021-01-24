@@ -1,4 +1,7 @@
+import csv
 import json
+
+from os import path
 from datetime import datetime
 
 from cement import Controller, ex
@@ -6,6 +9,7 @@ from cement import Controller, ex
 from core.crypto import generate_random_password, encrypt, decrypt
 from core.utils import read_master_password, create_hash_password, json_default
 from ext.persistence.json.domain.vault_entry import VaultEntry
+from ext.persistence.json.domain.vault_optional_attribute import OptionalAttribute
 
 
 class Entry(Controller):
@@ -51,7 +55,7 @@ class Entry(Controller):
         # check if user exist
         user = self.app.db.find_user_by_name(self.app.pargs.username)
         if user is None:
-            self.app.log.fatal("User %s does not exit in database".format(self.app.pargs.username))
+            self.app.log.fatal("User {} does not exit in database".format(self.app.pargs.username))
             return
 
         # get hash user password
@@ -69,7 +73,7 @@ class Entry(Controller):
 
         # TODO - Check if entry exist
         entry = self.app.db.find_entry_by_description(self.app.pargs.entry_description)
-        assert entry is None, 'Invalid entry description. Description "%s" already exist.'.format(
+        assert entry is None, 'Invalid entry description. Description "{}" already exist.'.format(
             self.app.pargs.entry_description)
 
         # if is a new entry
@@ -96,14 +100,18 @@ class Entry(Controller):
         self.app.db.add_new_entry(entry)
         self.app.db.save_data()
 
-        # TODO - show information to the user
-        print("Raw password: " + self.app.pargs.password
-              + "\nAdded new entry:\n" + json.dumps(
-            entry.__dict__,
-            ensure_ascii=False,
-            default=json_default,
-            indent=4
-        ))
+        #   show information to the user
+        print(
+            "Raw password: {}\nAdded new entry:\n{}".format(
+                self.app.pargs.password,
+                json.dumps(
+                    entry.__dict__,
+                    ensure_ascii=False,
+                    default=json_default,
+                    indent=4
+                )
+            )
+        )
 
     @ex(help='TODO create new user',
         arguments=[
@@ -133,7 +141,7 @@ class Entry(Controller):
         # check if user exist
         user = self.app.db.find_user_by_name(self.app.pargs.username)
         if user is None:
-            self.app.log.fatal("User %s does not exit in database".format(self.app.pargs.username))
+            self.app.log.fatal("User {} does not exit in database".format(self.app.pargs.username))
             return
 
         # get hash user password
@@ -201,7 +209,7 @@ class Entry(Controller):
         # check if user exist
         user = self.app.db.find_user_by_name(self.app.pargs.username)
         if user is None:
-            self.app.log.fatal("User %s does not exit in database".format(self.app.pargs.username))
+            self.app.log.fatal("User {} does not exit in database".format(self.app.pargs.username))
             return
 
         # get hash user password

@@ -71,6 +71,8 @@ $ docker run -it pwmanager --help
 
 - [ ] Create/Connect to storage only when required.
 - [ ] At storage creation time set master user.
-- [ ] Add option an option to save/replace a password
-- [ ] Add a verification to force/list password entries with more than x time.
+- [x] Add option an option to save a password
+- [ ] Add an import option to load passwords from csv kdbx file
+- [ ] Add option an option to replace a password
+- [ ] Add option an option if set to show a time based warning to replace to generate a new password
 - [ ] Remove database specific types to allow view/controller layer to integrate with other storage types.

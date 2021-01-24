@@ -31,7 +31,7 @@ class VaultDatabaseInterface:
         """Search for a user object based on it username"""
         pass
 
-    def find_entry_by_description(self, entry_description: str):
+    def find_entry(self, entry_description: str, entry_username: str, entry_group: str):
         """Search for a Entry object based on it entry_name"""
         pass
 
