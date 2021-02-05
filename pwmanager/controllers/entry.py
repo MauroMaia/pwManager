@@ -16,9 +16,10 @@ class Entry(Controller):
     class Meta:
         label = 'entry'
         stacked_type = 'nested'
-        stacked_on = 'vault'
+        stacked_on = 'base'
+        description = 'Handle entry object interactions'
 
-    @ex(help='TODO create new user',
+    @ex(help='Save new entry in the vault',
         arguments=[
             # TODO - ACL by username/password
             (
@@ -115,7 +116,7 @@ class Entry(Controller):
             )
         )
 
-    @ex(help='TODO create new user',
+    @ex(help='List entries in the vault that contains the provided description',
         arguments=[
             (
                     ['-u', '--user'],
@@ -170,7 +171,9 @@ class Entry(Controller):
             indent=4
         ))
 
-    @ex(help='TODO create new user',
+    @ex(
+        help='Get all entries in the vault that contains the provided description or the uuid. ATTENTION: The '
+             'password will be READABLE.',
         arguments=[
             (
                     ['-u', '--user'],

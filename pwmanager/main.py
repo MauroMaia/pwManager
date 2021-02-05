@@ -6,7 +6,6 @@ from cement.ext.ext_colorlog import ColorLogHandler
 
 from .controllers.entry import Entry
 from .controllers.user import User
-from .controllers.vault import Vault
 from .core.exc import AppError
 from .controllers.base import Base
 from .ext.json_ext import extend_json_file_db
