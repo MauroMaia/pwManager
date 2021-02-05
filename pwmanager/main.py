@@ -69,7 +69,6 @@ class MyApp(App):
         handlers = [
             Base,
             User,
-            Vault,
             Entry
         ]
 

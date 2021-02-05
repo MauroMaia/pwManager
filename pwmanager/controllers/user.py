@@ -8,9 +8,9 @@ class User(Controller):
         label = 'user'
         stacked_type = 'nested'
         stacked_on = 'base'
-        description = 'Handle user object interactions'
+        description = 'Feature is still work in progress.(Multi-tenant/Shared Vaults)'
 
-    @ex(help='TODO create new user',
+    @ex(help='Create new user',
         arguments=[
             (
                     ['-u', '--user'],
