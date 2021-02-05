@@ -7,7 +7,7 @@ from datetime import datetime
 from cement import Controller, ex
 
 from core.crypto import generate_random_password, encrypt, decrypt
-from core.utils import read_master_password, create_hash_password, json_default
+from core.utils import read_master_password, create_hash_password, json_default, check_for_password_exploits
 from ext.persistence.json.domain.vault_entry import VaultEntry
 from ext.persistence.json.domain.vault_optional_attribute import OptionalAttribute
 
@@ -61,6 +61,7 @@ class Entry(Controller):
         # get hash user password
         master_password = read_master_password(self.app)
         assert master_password is not None, 'Invalid master password.'
+        check_for_password_exploits(self.app, master_password)
 
         keys = create_hash_password(master_password, self.app.pargs.username)
         vault_key = keys[0]
@@ -86,6 +87,7 @@ class Entry(Controller):
         if self.app.pargs.password is None:
             self.app.pargs.password = generate_random_password(self.app, 16)
 
+        check_for_password_exploits(self.app, self.app.pargs.password)
         encrypted_password = encrypt(self.app.pargs.password, vault_key)
 
         entry = VaultEntry(
@@ -309,6 +311,7 @@ class Entry(Controller):
                         'Invalid entry description. Description "{}" already exist.'.format(row['Title'])
 
                     if row['Password'] != '':
+                        check_for_password_exploits(self.app, row['Password'])
                         row['Password'] = encrypt(row['Password'], vault_key).decode()
 
                     entry = VaultEntry(

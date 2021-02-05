@@ -1,6 +1,8 @@
 import hashlib
 import datetime
 import uuid
+import requests
+
 from getpass import getpass
 
 
@@ -41,3 +43,25 @@ def json_default(value):
         return str(value)
     else:
         return value.__dict__
+
+
+def check_for_password_exploits(app, password: str):
+    password_hash = hashlib.sha1(bytes(password, 'utf-8')).hexdigest().upper()
+    hash5sum = password_hash[:5]
+
+    url = "https://api.pwnedpasswords.com/range/" + hash5sum
+
+    payload = {}
+    headers = {}
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+
+    hashlist = response.text.split('\r\n')
+
+    app.log.debug("Checking password against 'pwnedpasswords' database.")
+    for hash_password in hashlist:
+        if password_hash.find(hash_password.split(':')[0]) >= 0:
+            app.log.warning("This password has been pwned")
+            return True
+
+    return False

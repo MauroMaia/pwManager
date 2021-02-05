@@ -2,6 +2,7 @@ from cement import Controller, ex
 from cement.utils.version import get_version_banner
 
 from core.crypto import generate_random_password
+from core.utils import check_for_password_exploits
 from ..core.version import get_version
 
 VERSION_BANNER = """
@@ -52,4 +53,6 @@ class Base(Controller):
     )
     def generate(self):
         """Example sub-command."""
-        print(generate_random_password(self.app, self.app.pargs.size) + "\n")
+        password = generate_random_password(self.app, self.app.pargs.size)
+        check_for_password_exploits(self.app, password)
+        print(password + "\n")

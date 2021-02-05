@@ -1,6 +1,6 @@
 from cement import Controller, ex
 
-from core.utils import create_hash_password, read_master_password
+from core.utils import create_hash_password, read_master_password, check_for_password_exploits
 
 
 class User(Controller):
@@ -29,6 +29,7 @@ class User(Controller):
 
         master_password = read_master_password(self.app)
         assert master_password is not None, 'Invalid master password.'
+        assert check_for_password_exploits(self.app, master_password) is not True, 'Insecure password for this feature'
 
         keys = create_hash_password(master_password, self.app.pargs.username)
         # args.vault_key = keys[0]
