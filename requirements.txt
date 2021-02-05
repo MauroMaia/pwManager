@@ -9,6 +9,4 @@ pycrypto>=2.6.1
 py3compat>=0.4
 Crypto>=1.4.1
 pycryptodome>=3.9.9
-
-pytest~=6.2.1
 requests~=2.25.1

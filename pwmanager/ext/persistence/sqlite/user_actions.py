@@ -1,4 +1,4 @@
-from ext.persistence.sqlite.db_models import AppUsers
+from .db_models import AppUsers
 
 
 def find_user_by_name(app, username):

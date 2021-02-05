@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 from typing import List
 
-from ext.persistence.json.domain.vault_optional_attribute import OptionalAttribute
+from .vault_optional_attribute import OptionalAttribute
 
 
 class VaultEntry(object):

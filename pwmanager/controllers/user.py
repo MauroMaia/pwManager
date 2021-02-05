@@ -1,6 +1,6 @@
 from cement import Controller, ex
 
-from core.utils import create_hash_password, read_master_password, check_for_password_exploits
+from ..core.utils import create_hash_password, read_master_password, check_for_password_exploits
 
 
 class User(Controller):

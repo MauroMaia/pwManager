@@ -1,6 +1,6 @@
 from cement import Controller, ex
 
-from core.utils import read_master_password, create_hash_password
+from ..core.utils import read_master_password, create_hash_password
 
 
 class Vault(Controller):

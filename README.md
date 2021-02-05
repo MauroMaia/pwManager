@@ -2,10 +2,10 @@
 
 ## Installation
 
-```
-$ pip install -r requirements.txt
+```Bash
+pip install -r requirements.txt
 
-$ pip install setup.py
+pip install setup.py
 ```
 
 ## Development
@@ -16,22 +16,22 @@ This project includes a number of helpers in the `Makefile` to streamline common
 
 The following demonstrates setting up and working with a development environment:
 
-```
+```Bash
 ### create a virtualenv for development
 
-$ make virtualenv
+make virtualenv
 
-$ source env/bin/activate
+source env/bin/activate
 
 
 ### run pwmanager cli application
 
-$ pwmanager --help
+pwmanager --help
 
 
 ### run pytest / coverage
 
-$ make test
+make test
 ```
 
 ### Releasing to PyPi
@@ -49,9 +49,9 @@ password = YOUR_PASSWORD
 Then use the included helper function via the `Makefile`:
 
 ```
-$ make dist
+make dist
 
-$ make dist-upload
+make dist-upload
 ```
 
 ## Deployments
@@ -61,10 +61,10 @@ $ make dist-upload
 Included is a basic `Dockerfile` for building and distributing `MFM Password Manager`, and can be built with the
 included `make` helper:
 
-```
-$ make docker
+```Bash
+make docker
 
-$ docker run -it pwmanager --help
+docker run -it pwmanager --help
 ```
 
 ## TODOS

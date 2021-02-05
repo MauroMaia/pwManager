@@ -3,10 +3,10 @@ import pickle
 import zlib
 from datetime import datetime
 
-from ext.persistence.VaultDatabaseInterface import VaultDatabaseInterface
-from ext.persistence.json.domain.vault_entry import VaultEntry
-from ext.persistence.json.domain.vault_file import VaultFile
-from ext.persistence.json.domain.vault_user import User
+from ..VaultDatabaseInterface import VaultDatabaseInterface
+from .domain.vault_entry import VaultEntry
+from .domain.vault_file import VaultFile
+from .domain.vault_user import User
 
 
 class JsonFileDB(VaultDatabaseInterface):

@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import List
 
-from ext.persistence.json.domain.vault_entry import VaultEntry
-from ext.persistence.json.domain.vault_user import User
+from .vault_entry import VaultEntry
+from .vault_user import User
 
 
 class VaultFile(object):

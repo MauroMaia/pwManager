@@ -4,12 +4,12 @@ from cement import App, TestApp, init_defaults
 from cement.core.exc import CaughtSignal
 from cement.ext.ext_colorlog import ColorLogHandler
 
-from controllers.entry import Entry
-from controllers.user import User
-from controllers.vault import Vault
-from pwmanager.core.exc import AppError
-from pwmanager.controllers.base import Base
-from pwmanager.ext.json_ext import extend_json_file_db
+from .controllers.entry import Entry
+from .controllers.user import User
+from .controllers.vault import Vault
+from .core.exc import AppError
+from .controllers.base import Base
+from .ext.json_ext import extend_json_file_db
 
 # configuration defaults
 CONFIG = init_defaults('pwmanager', 'log.colorlog')
@@ -52,9 +52,8 @@ class MyApp(App):
         # configuration handler
         config_handler = 'yaml'
         config_files = [
-            '/etc/myapp/myapp.conf',
-            '~/.config/myapp/myapp.conf',
-            '~/.myapp.conf',
+            '/etc/pwmanager/app.conf',
+            '~/.config/pwmanager/app.conf',
             '~/Documents/pet-projects/pwManager/config/pwmanager.yml'
         ]
 
@@ -76,8 +75,8 @@ class MyApp(App):
         ]
 
 
-class AppTest(TestApp, App):
-    """A sub-class of App that is better suited for testing."""
+class MyAppTest(TestApp,MyApp):
+    """A sub-class of MyApp that is better suited for testing."""
 
     class Meta:
         label = 'pwmanager'

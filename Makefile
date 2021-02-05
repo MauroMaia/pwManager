@@ -2,13 +2,16 @@
 
 clean:
 	find . -name '*.py[co]' -delete
+	rm -rf env/*
+	rm -rf venv/*
 
 virtualenv:
 	virtualenv --prompt '|> pwmanager <| ' env
 	env/bin/pip install -r requirements-dev.txt
 	env/bin/python setup.py develop
+	chmod +x env/bin/activate
 	@echo
-	@echo "VirtualENV Setup Complete. Now run: source env/bin/activate"
+	@echo "VirtualENV Setup Complete. Now run: source env/bin/activate (or the must appropriate version to your distribution)"
 	@echo
 
 test:
@@ -20,7 +23,11 @@ test:
 		tests/
 
 docker: clean
-	docker build -t pwmanager:latest .
+	podman build -t pwmanager:latest .
+	@echo
+	@echo "Let's test the docker image"
+	@echo
+	podman run -it pwmanager --help
 
 dist: clean
 	rm -rf dist/*

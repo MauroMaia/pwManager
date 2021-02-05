@@ -6,10 +6,10 @@ from datetime import datetime
 
 from cement import Controller, ex
 
-from core.crypto import generate_random_password, encrypt, decrypt
-from core.utils import read_master_password, create_hash_password, json_default, check_for_password_exploits
-from ext.persistence.json.domain.vault_entry import VaultEntry
-from ext.persistence.json.domain.vault_optional_attribute import OptionalAttribute
+from ..core.crypto import generate_random_password, encrypt, decrypt
+from ..core.utils import read_master_password, create_hash_password, json_default, check_for_password_exploits
+from ..ext.persistence.json.domain.vault_entry import VaultEntry
+from ..ext.persistence.json.domain.vault_optional_attribute import OptionalAttribute
 
 
 class Entry(Controller):

@@ -1,4 +1,4 @@
-from ext.persistence.json.json_file_db import JsonFileDB
+from .persistence.json.json_file_db import JsonFileDB
 
 
 def extend_json_file_db(app):

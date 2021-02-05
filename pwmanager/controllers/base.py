@@ -1,8 +1,9 @@
+
 from cement import Controller, ex
 from cement.utils.version import get_version_banner
 
-from core.crypto import generate_random_password
-from core.utils import check_for_password_exploits
+from ..core.crypto import generate_random_password
+from ..core.utils import check_for_password_exploits
 from ..core.version import get_version
 
 VERSION_BANNER = """
